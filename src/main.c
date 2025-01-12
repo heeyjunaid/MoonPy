@@ -56,9 +56,7 @@ int main(int argc, char **argv){
                 return -1;
             }
 
-            // parser
-
-            printf("%s\n", line);
+            run(line);
             free(line);
         }
         
