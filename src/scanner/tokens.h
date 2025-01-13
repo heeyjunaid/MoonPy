@@ -19,14 +19,18 @@ typedef enum MPY_TOKEN_TYPE {
     //assignment -> 23
     EQ,
 
+    BIT_SHIFT_RIGHT, BIT_SHIFT_LEFT,
+
     //expression
-    LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
+    LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,LEFT_BRACKET, RIGHT_BRACKET,
     COMMA, DOT, SEMICOLON, SLASH, PLUS, MINUS, STAR,
-    MODULO,
+    MODULO, ESCAPE,
     
+    UNK, // unkown token
     HASH,  // for comments
     SPACE, TAB,// any white space
     NEXT_LINE, START_OF_FILE, END_OF_FILE, //end of file
+
     //TODO: Add type checking
 }MPY_TOKEN_TYPE;
 
@@ -46,6 +50,7 @@ typedef struct MPY_TOKENS
 {
     MPY_TOKEN *token;
     struct MPY_TOKENS *next;
+    // maybe double linked list?
 }MPY_TOKENS;
 
 void print_token(MPY_TOKEN *token);
@@ -54,4 +59,7 @@ void print_tokens(MPY_TOKENS *tokens);
 //memory management
 void free_token(MPY_TOKEN *token);
 void free_tokens(MPY_TOKENS *tokens);
+
+MPY_TOKEN_TYPE scan_char_token_type(char *token);
+int get_token_len(MPY_TOKEN_TYPE token_type);
 #endif

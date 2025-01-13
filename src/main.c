@@ -20,6 +20,7 @@ int run(char *code){
         return 41;
     }
     
+    free_tokens(tokens);
     // parse code
     return 1;
 }
@@ -29,7 +30,8 @@ int main(int argc, char **argv){
     if (argc > 1){
         char *file_path = argv[1];
         char *file = read_file(file_path);
-        return run(file);
+        run(file);
+        free(file);
     }
     else{
         printf("MPY interactive shell\ntype :q to quit\n");

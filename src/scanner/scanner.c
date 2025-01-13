@@ -68,6 +68,22 @@ int match_next(char code, char expected)
     return 0;
 }
 
+int peak_till_eol(char *code, int cnt)
+{
+    // this function moves pointer to end of line or '\n' char
+    while (*(code + cnt) != '\n')
+    {
+        cnt++;
+    }
+    return ++cnt;
+}
+
+void move_pointer_next_line(int *line, int *col)
+{
+    *col = 0;
+    *line += 1;
+}
+
 /**
  * function to scan program and returns
  * pointer to linked list with tokens
@@ -83,22 +99,37 @@ MPY_TOKENS *scan_tokens(char *code)
     {
         char *curr_pointr = code + cnt;
         char curr_char = *curr_pointr;
-        if (match(curr_char, '='))
-        {
-            // todo: handle assignment, comparison
-            running_token_list->next = add_new_node(EQ, curr_pointr, line, col, 1);
-        }
-        else if (match(curr_char, '\n'))
-        {
-            running_token_list->next = add_new_node(NEXT_LINE, curr_pointr, line, col, 1);
-            line++;
-            col = -1;
-        }
 
+        MPY_TOKEN_TYPE token_type = scan_char_token_type(curr_pointr);
+        if (token_type == END_OF_FILE)
+        {
+            break;
+        }
+        int token_len = get_token_len(token_type);
+
+        switch (token_type)
+        {
+        case UNK:
+            continue;
+        case HASH:
+        {
+            cnt = peak_till_eol(code, cnt);
+            move_pointer_next_line(&line, &col);
+            continue;
+        }
+        case NEXT_LINE:
+            move_pointer_next_line(&line, &col);
+            cnt++;
+            continue;
+        default:
+            break;
+        }
+        running_token_list->next = add_new_node(token_type, curr_pointr, line, col, token_len);
         running_token_list = running_token_list->next;
-        col++;
-        cnt++; // increment pointer
+        col += token_len;
+        cnt += token_len; // increment pointer
     }
+    running_token_list->next = add_new_node(END_OF_FILE, "EOF", line, col, 3);
     print_tokens(tokens->next);
 
     return tokens->next; // init token is null
