@@ -31,6 +31,7 @@ typedef enum MPY_TOKEN_TYPE {
     SPACE, TAB,// any white space
     NEXT_LINE, START_OF_FILE, END_OF_FILE, //end of file
 
+    LIT, //literal
     //TODO: Add type checking
 }MPY_TOKEN_TYPE;
 
@@ -62,4 +63,5 @@ void free_tokens(MPY_TOKENS *tokens);
 
 MPY_TOKEN_TYPE scan_char_token_type(char *token);
 int get_token_len(MPY_TOKEN_TYPE token_type);
+MPY_TOKEN *scan_token(char *token, int line, int col);
 #endif

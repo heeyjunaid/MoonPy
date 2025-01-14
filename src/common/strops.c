@@ -38,3 +38,28 @@ char *copy_substring(char *str, int n){
     substr[n] = '\0'; 
     return substr;
 }
+
+
+/***
+ * try to match given string with substring
+ * for matching literal 
+ */
+
+int match_substring_with_str(char *str, int n, char *substr){
+    int cnt = 0;
+    while (cnt <= n)
+    {   
+        if ((*str == ' ' || *str == '\n' || *str == '\0') & (*substr == '\0')){
+            return 1;
+        }
+        if(*str != *substr){
+            return 0;
+        }
+
+        str++;
+        substr++;
+        cnt++;
+    }
+    
+    return 0;
+}
